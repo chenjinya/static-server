@@ -1,14 +1,17 @@
 {
-  "name": "static-server",
+  "name": "static-koa-server",
   "version": "1.0.0",
   "author": "jinyachen@gmail.com",
-  "description": "Tstatic-server",
+  "description": "a  nodejs static server !",
   "license": "MIT",
   "scripts": {
     "start": "node --harmony app.js"
   },
   "dependencies": {
     "koa": "^1.2.4",
-    "koa-static": "^2.0.0"
+    "koa-route": "^2.4.2",
+    "koa-static": "^2.0.0",
+    "sync-request": "^4.0.1"
   }
 }
+
