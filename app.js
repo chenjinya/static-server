@@ -29,7 +29,7 @@ app.use(route.get('/proxy/*', function * (name) {
     var headers = this.request.header;
 
     //self-make header start
-    headers['host'] = 'www.xiu8.com';
+    headers['host'] = 'www.baidu.com';
     //self-make header end
 
     var res = request('GET', willUrl, {
