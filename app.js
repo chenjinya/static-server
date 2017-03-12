@@ -1,11 +1,17 @@
 var koa = require('koa');
-var serve = require('koa-static');
+var static = require('koa-static');
 var route = new require('koa-route')
+var https = require('https');
+var fs = require('fs');
+
 var app = koa();
-
-
+var sslOptions = {
+  key: fs.readFileSync('ssl/private.pem'),
+  cert: fs.readFileSync('ssl/file.crt')
+}
+ 
 //静态
-app.use(serve(__dirname + '/static'));
+app.use(static(__dirname + '/static'));
 //代理，代理以/proxy/开头，比如 /proxy/img/ala/test
 app.use(route.get('/proxy/*', function * (name) {
     var urlPath = this.request.url;
@@ -18,9 +24,9 @@ app.use(route.get('/proxy/*', function * (name) {
 
     //self-make proxy host start
     //ATENTION: last charactor not need '/'
-    hostStr = 'https://www.baidu.com';
+    hostStr = 'https://www.xxx.com/proxy';
     if(urlPath.indexOf("/img") == 0) {
-        hostStr = 'https://image.baidu.com';
+        hostStr = 'https://img.xxx.com';
     }
     //self-make proxy host end
     var willUrl = hostStr + urlPath;
@@ -29,7 +35,7 @@ app.use(route.get('/proxy/*', function * (name) {
     var headers = this.request.header;
 
     //self-make header start
-    headers['host'] = 'www.baidu.com';
+    headers['host'] = 'www.xxx.com';
     //self-make header end
 
     var res = request('GET', willUrl, {
@@ -53,3 +59,5 @@ app.use(function *(next){
 
 // console.log(process.env)
 app.listen(8080);
+https.createServer(sslOptions, app.callback()).listen(8083);
+
